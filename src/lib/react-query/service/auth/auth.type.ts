@@ -1,4 +1,4 @@
-interface UserType {
+interface AuthType {
   uuid: string;
   username: string;
   name: string;
@@ -7,7 +7,7 @@ interface UserType {
   photo_url: string | null;
   role: RoleType;
 }
-export default UserType;
+export default AuthType;
 
 export interface RoleType {
   uuid: string;

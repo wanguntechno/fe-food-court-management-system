@@ -27,7 +27,7 @@ const NavItemOpen = ({ navItem }: { navItem: NavItem }) => {
       </Typography>
       <Collapse in={open}>
         {navItem.items.map((item, index) => (
-          <NavButton key={index} item={item} />
+          <NavButton key={index} item={item} className={index !== 0 ? 'mt-2' : ''} />
         ))}
       </Collapse>
     </div>

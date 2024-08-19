@@ -2,18 +2,17 @@
 
 import Link from 'next/link';
 
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 
-import { Bell, CircleGauge } from 'lucide-react';
+import { Bell, Gauge } from 'lucide-react';
 
-import useUserInfo from '@lib/hooks/useUserInfo';
+import ProfileMenu from '@/app/_components/ProfileMenu';
 import useTenantInfo from '@/lib/hooks/useTentantInfo';
 
 const Header = () => {
-  const { data } = useUserInfo();
   const { data: tenant } = useTenantInfo();
 
   return (
@@ -26,27 +25,21 @@ const Header = () => {
         </Link>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <IconButton
-              size="small"
-              variant="outlined"
-              color="primary"
-              LinkComponent={Link}
-              href="/dashboard/home"
-            >
-              <CircleGauge />
-            </IconButton>
-
             <IconButton size="small" variant="outlined" color="primary">
               <Bell />
             </IconButton>
           </div>
 
-          <Button className="gap-2">
-            <Avatar className="border border-primary bg-transparent uppercase text-primary">
-              {data?.username?.[0]}
-            </Avatar>
-            {data?.username}
-          </Button>
+          <ProfileMenu>
+            <Link href="/dashboard">
+              <MenuItem>
+                <ListItemIcon>
+                  <Gauge size={20} />
+                </ListItemIcon>
+                Dashboard
+              </MenuItem>
+            </Link>
+          </ProfileMenu>
         </div>
       </div>
     </nav>

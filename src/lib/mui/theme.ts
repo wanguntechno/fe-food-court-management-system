@@ -74,10 +74,10 @@ const MuiTheme = createTheme({
       fontWeight: 600,
     },
     body2: {
-      color: colors.slate[600],
+      color: colors.gray[600],
     },
     caption: {
-      color: colors.slate[500],
+      color: colors.gray[500],
     },
   },
 
@@ -95,15 +95,15 @@ const MuiTheme = createTheme({
       contrastText: '#fff',
     },
     gray: {
-      main: colors.slate[500],
-      light: colors.slate[400],
-      dark: colors.slate[600],
+      main: colors.gray[500],
+      light: colors.gray[400],
+      dark: colors.gray[600],
       contrastText: '#fff',
     },
     black: {
-      main: colors.slate[800],
-      light: colors.slate[700],
-      dark: colors.slate[900],
+      main: colors.gray[800],
+      light: colors.gray[700],
+      dark: colors.gray[900],
       contrastText: '#fff',
     },
     warning: {
@@ -172,7 +172,7 @@ const MuiTheme = createTheme({
               color: colors.primary[500],
               backgroundColor: colors.white,
               '&:hover': {
-                backgroundColor: colors.slate[100],
+                backgroundColor: colors.gray[100],
               },
             },
             '&.MuiButton-ghost': {

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import LoadingButton from '@mui/lab/LoadingButton';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -27,10 +29,16 @@ const ProductForm = ({ initialValue, onSubmit, loading }: Props) => {
     queryFn: getProductCategory,
   });
 
-  const { control, handleSubmit } = useForm<ProductFormType>({
+  const { control, handleSubmit, reset } = useForm<ProductFormType>({
     defaultValues: initialValue || productFormDefault,
     resolver: zodResolver(productFormSchema),
   });
+
+  useEffect(() => {
+    if (initialValue) {
+      reset(initialValue); // Update the form values when initialValue changes
+    }
+  }, [initialValue, reset]);
 
   return (
     <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
@@ -48,7 +56,8 @@ const ProductForm = ({ initialValue, onSubmit, loading }: Props) => {
           name="file_storage_uuid"
           control={control}
           label="Images"
-          options={{ accept: { 'image/*': ['.jpeg', '.jpg', '.png'] }, multiple: false }}
+          options={{ accept: { 'image/*': ['.jpeg', '.jpg', '.png'] } }}
+          value={initialValue?.file_storage_uuid}
         />
       </FormCard>
 
@@ -69,7 +78,13 @@ const ProductForm = ({ initialValue, onSubmit, loading }: Props) => {
             startAdornment: <InputAdornment position="start">Rp</InputAdornment>,
           }}
         />
-        <NumberInput fullWidth name="available_stock" label="Stock" control={control} />
+        <NumberInput
+          fullWidth
+          name="available_stock"
+          label="Stock"
+          control={control}
+          disabled={!!initialValue}
+        />
         <TextInput fullWidth name="code" label="Product code" control={control} />
       </FormCard>
 
@@ -80,7 +95,7 @@ const ProductForm = ({ initialValue, onSubmit, loading }: Props) => {
         color="black"
         className="ml-auto w-fit"
       >
-        Create Product
+        {initialValue ? 'Save Changes' : 'Create Product'}
       </LoadingButton>
     </form>
   );

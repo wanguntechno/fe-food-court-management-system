@@ -15,6 +15,7 @@ import SwiperCore from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import TextInput from '@/components/ui/form/text-input';
+import TAGS from '@/constant/tags';
 import getProducts from '@/lib/react-query/service/products/getProducts';
 import { ProductType } from '@/lib/react-query/service/products/product.type';
 import { useAppDispatch, useAppSelector } from '@/lib/redux/hooks';
@@ -31,7 +32,7 @@ const Home = () => {
   const orders = useAppSelector(getOrders);
 
   const { data } = useQuery<ProductType[]>({
-    queryKey: ['products'],
+    queryKey: [TAGS.PRODUCT],
     queryFn: getProducts,
   });
 

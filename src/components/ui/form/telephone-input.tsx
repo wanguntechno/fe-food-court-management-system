@@ -12,28 +12,16 @@ interface Props<T extends FieldValues> extends Omit<MuiTelInputProps, 'ref'> {
   control: Control<T>;
 }
 
-const TelInput = <T extends FieldValues>({
-  label,
-  placeholder,
-  name,
-  control,
-  ...props
-}: Props<T>) => (
+const TelInput = <T extends FieldValues>({ placeholder, name, control, ...props }: Props<T>) => (
   <ControllWrapper<T>
     name={name}
     control={control}
     render={({ ...field }) => (
-      <>
-        <InputLabel error={props.error || field.error} disabled={props.disabled} className="mb-1">
-          {label || 'No. Telepon'}
-        </InputLabel>
-        <MuiTelInput
-          placeholder={placeholder || (label as string) || 'No. Telepon'}
-          defaultCountry="ID"
-          {...field}
-          {...(props as Omit<MuiTelInputProps, 'forceCallingCode'>)}
-        />
-      </>
+      <MuiTelInput
+        defaultCountry="ID"
+        {...field}
+        {...(props as Omit<MuiTelInputProps, 'forceCallingCode'>)}
+      />
     )}
   />
 );

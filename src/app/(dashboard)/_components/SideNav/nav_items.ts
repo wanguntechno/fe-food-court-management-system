@@ -1,4 +1,4 @@
-import { ChartBarBig, Package } from 'lucide-react';
+import { ChartBarBig, Package, UserRound } from 'lucide-react';
 
 export interface OverViewItem {
   label: string;
@@ -24,6 +24,11 @@ const MANAGEMENT_ITEMM = [
     label: 'Product',
     pathname: '/dashboard/product',
     icon: Package,
+  },
+  {
+    label: 'User',
+    pathname: '/dashboard/user',
+    icon: UserRound,
   },
 ];
 

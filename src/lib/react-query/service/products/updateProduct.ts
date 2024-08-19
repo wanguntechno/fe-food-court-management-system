@@ -3,9 +3,10 @@ import parseObjectRequest from '@/lib/utils/parseObjectRequest';
 
 import fetchHelper from '../fetchHelper';
 
-const createProduct = async (data: ProductFormType) => {
-  const result = await fetchHelper('/selling-good', 'POST', await parseObjectRequest(data));
+const updateProduct = async (uuid: string, data: ProductFormType) => {
+  const result = await fetchHelper(`/selling-good/${uuid}`, 'PUT', await parseObjectRequest(data));
+
   return result;
 };
 
-export default createProduct;
+export default updateProduct;

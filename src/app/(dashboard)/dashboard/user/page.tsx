@@ -10,10 +10,10 @@ import { CirclePlus } from 'lucide-react';
 
 import DashboardTitle from '@/components/ui/dashboard/dashboard-title';
 import TAGS from '@/constant/tags';
-import getProducts from '@/lib/react-query/service/products/getProducts';
-import { ProductType } from '@/lib/react-query/service/products/product.type';
+import getUsers from '@/lib/react-query/service/user/getUsers';
+import { UserType } from '@/lib/react-query/service/user/user.type';
 
-import ProductTable from './_components/ProductTable';
+import UserTable from './_components/UserTable';
 
 const Page = () => {
   const breadcrumbs = [
@@ -22,35 +22,34 @@ const Page = () => {
       href: '/dashboard/home',
     },
     {
-      label: 'Product',
+      label: 'User',
     },
   ];
 
-  const { data, isLoading } = useQuery<ProductType[]>({
-    queryKey: [TAGS.PRODUCT],
-    queryFn: getProducts,
+  const { data, isLoading } = useQuery<UserType[]>({
+    queryKey: [TAGS.USER],
+    queryFn: getUsers,
   });
 
   return (
     <div className="flex flex-1 flex-col">
       <div className="mb-8 flex w-full items-center justify-between">
-        <DashboardTitle title="Product List" breadcrumbs={breadcrumbs} />
+        <DashboardTitle title="User List" breadcrumbs={breadcrumbs} />
 
         <Button
           startIcon={<CirclePlus />}
           variant="contained"
           color="black"
           LinkComponent={Link}
-          href="/dashboard/product/new"
+          href="/dashboard/user/new"
         >
-          New Product
+          New User
         </Button>
       </div>
 
-      <ProductTable
+      <UserTable
         loading={isLoading}
-        products={_.map(data || [], (elm) => ({ ...elm, id: elm.uuid }))}
-        // products={data ? Array.from({ length: 20 }).map((__, i) => ({ ...data[0], id: i })) : []}
+        users={_.map(data || [], (elm) => ({ ...elm, id: elm.uuid }))}
       />
     </div>
   );

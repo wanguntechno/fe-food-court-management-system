@@ -57,7 +57,7 @@ const Providers = ({ children }: Readonly<{ children: React.ReactNode }>) => (
       <ReduxProvider>
         <ThemeProvider theme={MuiTheme}>
           <ReactQueryProvider>
-            <NextTopLoader zIndex={9999} color={colors.primary[500]} height={5} />
+            <NextTopLoader zIndex={9999} color={colors.primary[500]} />
             {children}
           </ReactQueryProvider>
         </ThemeProvider>

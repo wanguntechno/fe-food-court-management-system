@@ -27,9 +27,9 @@ const NumberFormatCustom = forwardRef<NumericFormatProps, NumericFormatProps>((p
           onChange({
             target: {
               name: props.name || '',
-              value: `${values.floatValue}` || '0',
+              value: values.floatValue || 0,
             },
-          } as ChangeEvent<HTMLInputElement>);
+          } as unknown as ChangeEvent<HTMLInputElement>);
         }
       }}
     />

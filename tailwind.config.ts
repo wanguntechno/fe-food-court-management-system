@@ -19,6 +19,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        ...colors,
         primary: {
           DEFAULT: colors.primary[500],
           100: colors.primary[100],

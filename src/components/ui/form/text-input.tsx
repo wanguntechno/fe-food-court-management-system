@@ -8,7 +8,7 @@ import type { Control, FieldValues, Path } from 'react-hook-form';
 import ControllWrapper from './form-control-wrapper';
 
 interface Props<T extends FieldValues> extends Omit<TextFieldProps, 'outlined'> {
-  name: string;
+  name?: Path<T>;
   control?: Control<T>;
 }
 

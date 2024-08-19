@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import UserType from '../react-query/service/auth/user.type';
+import AuthType from '../react-query/service/auth/auth.type';
 import getTenantInfo from '../react-query/service/tenant/getTenantInfo';
 
 const useTenantInfo = () => {
-  return useQuery<UserType>({
+  return useQuery<AuthType>({
     queryKey: ['tenant'],
     queryFn: getTenantInfo,
   });

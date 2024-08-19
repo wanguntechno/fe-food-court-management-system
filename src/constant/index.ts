@@ -31,6 +31,7 @@ import {
 
 export const colors = {
   primary: {
+    DEFAULT: '#25AF25',
     100: '#E1FBD3',
     200: '#BDF7A9',
     300: '#8CE779',

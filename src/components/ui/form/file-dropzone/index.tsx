@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Box, { BoxProps } from '@mui/material/Box';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -20,6 +20,7 @@ interface Props<T extends FieldValues> extends BoxProps {
   control: Control<T>;
   options: DropzoneOptions;
   label?: string;
+  value?: string | string[] | File | File[];
 }
 
 const FileDropzone = <T extends FieldValues>({
@@ -28,6 +29,7 @@ const FileDropzone = <T extends FieldValues>({
   options,
   className,
   label,
+  value: initialValue,
   ...props
 }: Props<T>) => {
   return (
@@ -35,13 +37,13 @@ const FileDropzone = <T extends FieldValues>({
       name={name}
       control={control}
       render={({ onChange, error, helperText, value }) => {
-        const { getRootProps, getInputProps, isDragActive, acceptedFiles } = useDropzone({
+        const { getRootProps, getInputProps, isDragActive } = useDropzone({
           onDropAccepted: (files) => {
-            if (files.length > 1) {
-              const intitalValue = (value as any[]).filter((file) => !(file instanceof File));
-              onChange([...intitalValue, ...files]);
+            if (options.multiple) {
+              onChange([...value, ...files]);
             } else {
-              onChange(files[0]);
+              onChange(null);
+              setTimeout(() => onChange(files[0]), 0);
             }
           },
           ...options,
@@ -49,8 +51,10 @@ const FileDropzone = <T extends FieldValues>({
 
         const handleRemoveFile = useCallback(
           (index: number) => {
-            const updatedFiles = (value || []).filter((_: File, i: number) => i !== index);
-            onChange(updatedFiles);
+            const updatedValue = (Array.isArray(value) ? value : [value]).filter(
+              (_: File, i: number) => i !== index,
+            );
+            onChange(updatedValue);
           },
           [value, onChange],
         );
@@ -62,7 +66,7 @@ const FileDropzone = <T extends FieldValues>({
               {...getRootProps()}
               className={cn(
                 'duratoin-300 flex cursor-pointer flex-col items-center justify-center rounded-[0.6rem] border-2 border-dashed border-gray-300 bg-gray-100 p-4 py-16 hover:border-gray-700 hover:opacity-80',
-                error && 'border-red-500 bg-red-50 text-red-500 hover:border-red-500',
+                error && 'border-red-500 bg-red-100/50 text-red-500 hover:border-red-500',
                 isDragActive && 'border-primary-500',
                 className,
               )}
@@ -82,8 +86,11 @@ const FileDropzone = <T extends FieldValues>({
             </Box>
             <FormHelperText error={error}>{helperText}</FormHelperText>
 
-            {acceptedFiles.length > 0 && (
-              <FileList files={acceptedFiles} onRemove={handleRemoveFile} />
+            {value && (
+              <FileList
+                files={Array.isArray(value) ? value : [value]}
+                onRemove={handleRemoveFile}
+              />
             )}
           </div>
         );

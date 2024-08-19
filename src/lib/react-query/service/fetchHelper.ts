@@ -38,9 +38,9 @@ const fetchHelper = async <T>(
     body,
     // cache: 'no-store',
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dev-semesta.wangun.co/api/tenant',
+      'Access-Control-Allow-Credentials': 'true',
       Accept: '*/*',
-      // 'Content-Type': 'application/json',
       Authorization: `Bearer ${getCookie('token') || ''}`,
       ...headerInit,
     },

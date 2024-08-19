@@ -6,6 +6,8 @@ import { useMutation } from '@tanstack/react-query';
 import { enqueueSnackbar } from 'notistack';
 
 import DashboardTitle from '@/components/ui/dashboard/dashboard-title';
+import TAGS from '@/constant/tags';
+import { getQueryCLient } from '@/lib/react-query/providers';
 import createProduct from '@/lib/react-query/service/products/createProduct';
 
 import ProductForm from '../_components/ProductForm';
@@ -26,12 +28,14 @@ const Page = () => {
     },
   ];
 
+  const queryClient = getQueryCLient();
   const router = useRouter();
   const { mutate, isPending } = useMutation({
-    mutationKey: ['products'],
+    mutationKey: [TAGS.PRODUCT],
     mutationFn: createProduct,
     onSuccess: () => {
       enqueueSnackbar('Product succesfully created', { variant: 'success' });
+      queryClient.invalidateQueries({ queryKey: [TAGS.PRODUCT] });
       router.push('/dashboard/product');
     },
     onError: (error) => {

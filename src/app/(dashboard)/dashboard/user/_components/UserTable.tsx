@@ -10,89 +10,66 @@ import { GridColDef } from '@mui/x-data-grid';
 
 import { useMutation } from '@tanstack/react-query';
 import { useDebounce } from '@uidotdev/usehooks';
-import dayjs from 'dayjs';
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 import { enqueueSnackbar } from 'notistack';
 
-import ImageContainer from '@/components/ImageContainer';
 import DataGrid from '@/components/mui/data-grid';
 import Menu from '@/components/mui/menu';
 import TAGS from '@/constant/tags';
 import { getQueryCLient } from '@/lib/react-query/providers';
-import deleteProduct from '@/lib/react-query/service/products/deleteProduct';
-import { ProductType } from '@/lib/react-query/service/products/product.type';
-import formatToRp from '@/lib/utils/formatToRp';
+import deleteUser from '@/lib/react-query/service/user/deleteUser';
+import { UserType } from '@/lib/react-query/service/user/user.type';
 import searchFilter from '@/lib/utils/searchFilter';
 
-import ProductTableToolbar, { ProductTableToolbarProps } from './ProductTableToolbar';
+import UserTableToolbar, { UserTableToolbarProps } from './UserTableToolbar';
 
 interface Props {
-  products: ProductType[];
+  users: UserType[];
   loading?: boolean;
 }
 
-const ProductTable = ({ products, loading }: Props) => {
+const UserTable = ({ users, loading }: Props) => {
   const queryClient = getQueryCLient();
 
   const { mutate } = useMutation({
-    mutationKey: [TAGS.PRODUCT],
-    mutationFn: (uuid: string) => deleteProduct(uuid),
+    mutationKey: [TAGS.USER],
+    mutationFn: (uuid: string) => deleteUser(uuid),
     onSuccess: () => {
-      enqueueSnackbar('Product successfully deleted', { variant: 'success' });
-      queryClient.invalidateQueries({ queryKey: [TAGS.PRODUCT] });
+      enqueueSnackbar('User successfully deleted', { variant: 'success' });
+      queryClient.invalidateQueries({ queryKey: [TAGS.USER] });
     },
     onError: (error) => {
       console.error(error);
-      enqueueSnackbar('Failed to delete product', { variant: 'error' });
+      enqueueSnackbar('Failed to delete user', { variant: 'error' });
     },
   });
 
-  const columns: GridColDef<(typeof products)[number]>[] = [
+  const columns: GridColDef<(typeof users)[number]>[] = [
+    {
+      field: 'employee_number',
+      headerName: 'Number',
+      width: 100,
+    },
     {
       field: 'name',
-      headerName: 'Product',
-      hideable: false,
+      headerName: 'Name',
       flex: 1,
-      renderCell: (params) => {
-        const { row } = params;
-        return (
-          <div className="flex items-center gap-3 py-3">
-            <ImageContainer
-              src={row.photo?.url || ''}
-              alt={row.name}
-              className="size-16 rounded-lg"
-            />
-            <Typography variant="body1">
-              {row.name}
-              <br />
-              <Typography variant="caption">{row.item_category.name}</Typography>
-            </Typography>
-          </div>
-        );
-      },
     },
     {
-      field: 'created_at',
-      headerName: 'Created at',
-      width: 160,
-      valueGetter: (value) => (value ? dayjs(value * 1000).format('DD MMM YYYY') : '-'),
+      field: 'username',
+      headerName: 'Username',
+      flex: 1,
+      valueGetter: (_, row) => row.user.username,
     },
     {
-      field: 'available_stock',
-      headerName: 'Stock',
+      field: 'phone_number',
+      headerName: 'Phone Number',
       width: 160,
     },
     {
-      field: 'price',
-      headerName: 'Base Price',
-      width: 160,
-      valueGetter: (value) => formatToRp(value),
-    },
-    {
-      field: 'selling_price',
-      headerName: 'Selling Price',
-      width: 160,
-      valueGetter: (value) => formatToRp(value),
+      field: 'address',
+      headerName: 'Address',
+      flex: 1,
     },
     {
       field: 'uuid',
@@ -112,7 +89,7 @@ const ProductTable = ({ products, loading }: Props) => {
               className: 'min-w-40',
             }}
           >
-            <Link href={`/dashboard/product/${params.value}`}>
+            <Link href={`/dashboard/user/${params.value}`}>
               <MenuItem>
                 <ListItemIcon>
                   <Pencil size={20} />
@@ -120,7 +97,11 @@ const ProductTable = ({ products, loading }: Props) => {
                 Edit
               </MenuItem>
             </Link>
-            <MenuItem className="text-red-500" onClick={() => mutate(params.value)}>
+            <MenuItem
+              className="text-red-500"
+              onClick={() => mutate(params.value)}
+              disabled={!!params.row.is_master}
+            >
               <ListItemIcon>
                 <Trash2 size={20} className="text-red-500" />
               </ListItemIcon>
@@ -136,8 +117,8 @@ const ProductTable = ({ products, loading }: Props) => {
   const debounceSearch = useDebounce(searchText, 300);
 
   const filteredRows = useMemo(() => {
-    return searchFilter(products, debounceSearch, ['name']);
-  }, [debounceSearch, products]);
+    return searchFilter(users, debounceSearch, ['name']);
+  }, [debounceSearch, users]);
 
   return (
     <div className="flex h-1 flex-grow flex-col">
@@ -148,14 +129,14 @@ const ProductTable = ({ products, loading }: Props) => {
         slotProps={{
           toolbar: {
             onSearch: (val) => setSearchText(val),
-          } as ProductTableToolbarProps,
+          } as UserTableToolbarProps,
         }}
         slots={{
-          toolbar: ProductTableToolbar as any,
+          toolbar: UserTableToolbar as any,
         }}
       />
     </div>
   );
 };
 
-export default memo(ProductTable);
+export default memo(UserTable);

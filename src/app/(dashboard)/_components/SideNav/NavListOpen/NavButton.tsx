@@ -6,9 +6,11 @@ import { usePathname } from 'next/navigation';
 import Button from '@mui/material/Button';
 import Typograhy from '@mui/material/Typography';
 
+import { cn } from '@/lib/utils';
+
 import { OverViewItem } from '../nav_items';
 
-const NavButton = ({ item }: { item: OverViewItem }) => {
+const NavButton = ({ item, className }: { item: OverViewItem; className?: string }) => {
   const pathname = usePathname();
   const isActive = useMemo(() => {
     return pathname.startsWith(item.pathname);
@@ -19,7 +21,7 @@ const NavButton = ({ item }: { item: OverViewItem }) => {
     <Button
       variant={isActive ? 'ghost' : 'text'}
       color={isActive ? 'primary' : 'gray'}
-      className="w-full justify-start px-4 py-3"
+      className={cn('w-full justify-start px-4 py-3', className)}
       LinkComponent={Link}
       href={item.pathname}
     >
